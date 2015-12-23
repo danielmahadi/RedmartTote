@@ -35,6 +35,14 @@ namespace RedmartTote
             var selectedProducts = PickUpProducts(tote, allProducts, pickList);
 
             Console.WriteLine("{0} - Report.", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+            foreach (var selectedProduct in selectedProducts)
+            {
+                Console.WriteLine("id: {0}, Measure: {1}*{2}*{3}, Price: {4}, Weight: {5}",
+                    selectedProduct.Id, selectedProduct.Dimension.Length,
+                    selectedProduct.Dimension.Width, selectedProduct.Dimension.Height,
+                    selectedProduct.Price, selectedProduct.Weight);
+            }
+
             Console.WriteLine("Id: {0}", selectedProducts.Sum(x => x.Id));
             Console.WriteLine("Volume: {0} / {1}", selectedProducts.Sum(x => x.Dimension.Volume), tote.Volume);
             Console.WriteLine("Weight: {0}", selectedProducts.Sum(x => x.Weight));
@@ -62,13 +70,6 @@ namespace RedmartTote
                 remainingSpace -= currentProduct.Dimension.Volume;
             }
 
-            foreach (var selectedProduct in selectedProducts)
-            {
-                Console.WriteLine("id: {0}, Measure: {1}*{2}*{3}, Price: {4}, Weight: {5}",
-                    selectedProduct.Id, selectedProduct.Dimension.Length,
-                    selectedProduct.Dimension.Width, selectedProduct.Dimension.Height,
-                    selectedProduct.Price, selectedProduct.Weight);
-            }
             return selectedProducts;
         }
 
@@ -117,15 +118,7 @@ namespace RedmartTote
                     }
 
                     pickList[idx, volIdx] = keep;
-
-                    if (chosenVal == 0 && volIdx > 0)
-                    {
-                        tempValueList[volIdx] = tempValueList[volIdx - 1];
-                    }
-                    else
-                    {
-                        tempValueList[volIdx] = chosenVal;
-                    }
+                    tempValueList[volIdx] = chosenVal;
                 }
 
                 for (var i = 0; i < columnSize; i++)
